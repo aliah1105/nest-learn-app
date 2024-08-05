@@ -19,7 +19,7 @@ import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { CurrentUser } from './decorators/currentUser.decorator';
 import { User } from './user.entity';
-import { AuthGaurd } from 'src/gaurds/auth.guard';
+import { AuthGaurd } from '../gaurds/auth.guard';
 
 @Controller('auth')
 @Serialize(UserDto)
@@ -58,11 +58,6 @@ export class UsersController {
 
   @Post('signout')
   signout(@Session() session: any) {
-    session.userId = null;
-  }
-
-  @Post('signout')
-  signOut(@Session() session: any) {
     session.userId = null;
   }
 
