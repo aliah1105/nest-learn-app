@@ -7,10 +7,18 @@ import { User } from './user.entity';
 describe('AuthService test: ', () => {
     let service: AuthService;
     let fakeUserService: Partial<UsersService>
+    const users: User[] = [];
     beforeEach(async () => {
         fakeUserService = {
-            find: () => Promise.resolve([]),
-            create: (email: string, password: string) => Promise.resolve({ id: 1, email, password } as User)
+            find: (email: string) => {
+                const filteredUser = users.filter(user => user.email === email);
+                return Promise.resolve(filteredUser);
+            },
+            create: (email: string, password: string) => {
+                const user = { id: Math.floor(Math.random() * 999999), email, password } as User;
+                users.push(user);
+                return Promise.resolve(user);
+            }
         };
 
         const module = await Test.createTestingModule({
@@ -41,7 +49,7 @@ describe('AuthService test: ', () => {
     });
 
     it('throw an error when user sign up with email that already exist', async () => {
-        fakeUserService.find = () => Promise.resolve([{ id: 1, email: 'a', password: '1' } as User]);
+        await service.signup('asdf2@gmail.com', '1');
         try {
             await service.signup('asdf@gmail.com', '1');
         } catch (error) {
@@ -50,25 +58,26 @@ describe('AuthService test: ', () => {
     });
 
     it('throw error when sign in with user that email does not exist', async () => {
+        await service.signup('hello1@gmail.com', 'hello');
         try {
-            await service.signin('sdf@sddf.com', '454');
+            await service.signin('hello@gmail.com', 'hello');
         } catch (error) {
             expect(error.message).toEqual('User with this email not found');
         }
     });
 
     it('throw error if enter invalid password', async () => {
-        fakeUserService.find = () => Promise.resolve([{ id: 1, email: 'asdf@gmail.com', password: 'test' } as User]);
+        await service.signup('asdf1@gmail.com', 'test3');
         try {
-            await service.signin('asdf@gmail.com', 'test2');
+            await service.signin('asdf1@gmail.com', 'test2');
         } catch (error) {
             expect(error.message).toEqual('Bad identity information');
         }
     });
 
     it('if enter correct password', async () =>{
-        fakeUserService.find = () => Promise.resolve([{ email: 'asdf@gmail.com', password: 'f12afb6173d2a64f.aec410de7daac9cf7ff0071a516d9f3e449cd84bcc3223fa58b41c478e68054b' } as User]);
-        await service.signin('asdf@gmail.com', 'test1234');
+        await service.signup('hello@gmail.com', 'test1234');
+        await service.signin('hello@gmail.com', 'test1234');
     });
 });
 
