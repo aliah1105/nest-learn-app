@@ -16,7 +16,7 @@ describe('Auth System (e2e) tests', () => {
   });
 
   it('test signup working', async () => {
-    const email = 'askj@gmail.com';
+    const email = 'askjui@gmail.com';
     return request(app.getHttpServer())
       .post('/auth/signup')
       .send({ email, password: 'test1234' })
