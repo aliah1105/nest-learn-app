@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { User } from 'src/users/user.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
@@ -21,4 +22,6 @@ export class Report {
   lat: number;
   @Column()
   mileage: number;
+  @Column({ default: false })
+  approved: boolean;
 }
