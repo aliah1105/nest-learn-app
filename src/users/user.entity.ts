@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   AfterInsert,
   AfterUpdate,
@@ -20,6 +21,9 @@ export class User {
   @Column()
   @Exclude()
   password: string;
+
+  @Column({ default: true })
+  admin: boolean
 
   @OneToMany(() => Report, (report) => report.user)
   reports: Report[];
