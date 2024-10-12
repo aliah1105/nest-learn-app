@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -19,4 +20,4 @@ import { CurrentUserInterceptor } from './interceptors/currentUser.interceptor';
     },
   ],
 })
-export class UsersModule {}
+export class UsersModule { }
