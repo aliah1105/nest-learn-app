@@ -28,7 +28,7 @@ export class ReportsController {
     }
 
     @Get()
-    getEstimate(@Query() query: GetEstimateDto) {
-
+    async getEstimate(@Query() query: GetEstimateDto) {
+        return await this.reportService.createEsitmate(query);
     }
 }
